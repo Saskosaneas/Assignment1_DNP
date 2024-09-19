@@ -49,6 +49,9 @@ public class CliApp
              case "5":
                 await AddComentAsync();
                 break;
+             case "6":
+                await FindSpecificPostAsync();
+                break;
              
             }
 
@@ -117,14 +120,25 @@ public class CliApp
                 
                 await _commentRepository.AddAsync(new Comment(1, body,postID_comment));
                 Console.WriteLine("Comment added successfully.");
-                
                 }
-        
-    
-        
-    
-    
-    
-    
+            
+    private async Task FindSpecificPostAsync()
+        {
+            var posts = _postRepository.GetMany();
+            Console.WriteLine("What post are you looking for? (give ID)");
+             int postID_search = Convert.ToInt32(Console.ReadLine()); 
+            
+            Post? post = await _postRepository.GetSingleAsync(postID_search4);
+            if (post == null)
+            {
+                Console.WriteLine("Post does not exist");
+                return;
+            }
+            
+            Console.WriteLine($"Title: {post.Title}");
+            Console.WriteLine($"Body: {post.Body}");
+            Console.WriteLine($"User ID: {post.UserID}");
+            
 }
+        }
 

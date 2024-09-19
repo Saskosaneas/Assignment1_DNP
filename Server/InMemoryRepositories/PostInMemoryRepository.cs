@@ -46,12 +46,12 @@
             return Task.CompletedTask;
         }
 
-        public Task<Post> GetSingleAsync(int ID)
+        public Task<Post> GetSingleAsync(int id)
         {
-            Post? post = posts.SingleOrDefault(p => p.ID == ID);
+            Post? post = posts.SingleOrDefault(p => p.ID == id);
             if (post is null)
             {
-                throw new InvalidOperationException( $"Post with ID '{ID}' not found");
+                throw new InvalidOperationException( $"Post with ID '{id}' not found");
             }
             return Task.FromResult(post);
         }
