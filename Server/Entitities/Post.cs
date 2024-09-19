@@ -6,4 +6,12 @@ public class Post
     public string Body { get; set; }
     public int ID { get; set; }
     public int UserID { get; set; }
+
+    public Post(string title, string body, int id, int userID)
+    {
+        Title = title;
+        Body = body;
+        ID = id;
+        UserID = userID;
+    }
 }
