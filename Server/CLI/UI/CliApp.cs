@@ -1,5 +1,5 @@
 ﻿using Entities;
-using InMemoryRepositories;
+using FileRepositories;
 using RepositoryContracts;
 namespace CLI.UI;
 
@@ -128,7 +128,7 @@ public class CliApp
             Console.WriteLine("What post are you looking for? (give ID)");
              int postID_search = Convert.ToInt32(Console.ReadLine()); 
             
-            Post? post = await _postRepository.GetSingleAsync(postID_search4);
+            Post? post = await _postRepository.GetSingleAsync(postID_search);
             if (post == null)
             {
                 Console.WriteLine("Post does not exist");
