@@ -70,7 +70,7 @@ public class CliApp
             Console.WriteLine("Invalid input. Username and password cannot be empty.");
             return;
         }
-        await _userRepository.AddAsync(new User(0, username, password));
+        await _userRepository.AddAsync(new User(username,password));
         Console.WriteLine("User created successfully");
     }
     
