@@ -98,7 +98,7 @@ public class CliApp
                 Console.WriteLine("Enter a user ID");
                 int userID = Convert.ToInt32(Console.ReadLine());
                 
-            await _postRepository.AddAsync(new Post(title, body,userID,1));
+            await _postRepository.AddAsync(new Post(title, body,userID));
                 Console.WriteLine("Post created successfully.");
          }
         
