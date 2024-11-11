@@ -2,13 +2,14 @@
 
 public class Comment
 {
+    public int UserID { get; set; }
     public string Body { get; set; }
     public int ID { get; set; }
     public int PostID {get; set;}
     
-    public Comment (int id, string body, int postID)
+    public Comment (string body, int postID, int userID)
     {
-        ID = id;
+        UserID = userID;
         Body = body;
         PostID = postID;
      }

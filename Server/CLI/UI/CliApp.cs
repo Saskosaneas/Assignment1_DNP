@@ -118,7 +118,7 @@ public class CliApp
                 Console.WriteLine("Write your comment");
                 string? body = Console.ReadLine();
                 
-                await _commentRepository.AddAsync(new Comment(1, body,postID_comment));
+                await _commentRepository.AddAsync(new Comment("1", 1,postID_comment));
                 Console.WriteLine("Comment added successfully.");
                 }
             
