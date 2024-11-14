@@ -36,7 +36,7 @@ public class PostController : ControllerBase
         return Created($"posts/{created.ID}", dto);
     }
 
-    [HttpPut]
+    [HttpPut("{id}")]
     public async Task<IResult> ReplacePost([FromRoute] int id,
         [FromBody] PostDto req, [FromServices] IpostReporsitory postReporsitory)
     {
@@ -49,7 +49,7 @@ public class PostController : ControllerBase
         return Results.Ok();
     }
 
-    [HttpGet]
+    [HttpGet("id/{id}")]
     public async Task<IResult> GetPost([FromRoute] int id)
     {
         Post post = await postReporsitory.GetSingleAsync(id);
@@ -69,7 +69,7 @@ public class PostController : ControllerBase
         return Results.Ok(posts);
     }
     
-    [HttpPost]
+    [HttpPost("user/{userID}")]
     public async Task<IResult> GetPostByUser ([FromRoute] int? userID)
     {
         var posts = postReporsitory.GetMany();
@@ -77,7 +77,7 @@ public class PostController : ControllerBase
         return Results.Ok(posts);
     }
 
-    [HttpDelete]
+    [HttpDelete("{id:int}")]
     public async Task<IResult> DeletePost([FromRoute] int id)
     {
         await postReporsitory.DeleteAsync(id);

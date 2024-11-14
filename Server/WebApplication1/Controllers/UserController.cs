@@ -61,7 +61,7 @@ public async Task<IResult> ReplaceUser([FromRoute] int id,
     return Results.Ok(existingUser);
 }
 
-[HttpDelete("{id}")]
+[HttpDelete("{id:int}")]
 public async Task<IResult> DeleteUser([FromRoute] int id)
 {
     await userRepository.DeleteAsync(id);

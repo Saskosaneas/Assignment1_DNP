@@ -36,7 +36,7 @@ public class CommentController
         };
         return Results.Created($"comments/{created.ID}", dto);    }
 
-    [HttpPut]
+    [HttpPut("{id}")]
     public async Task<IResult> ReplaceComment([FromRoute] int id,
         [FromBody] CommentDto req,
         [FromServices] IcommentRepository commentRepository)
@@ -49,7 +49,7 @@ public class CommentController
         return Results.Ok();
     }
 
-    [HttpGet]
+    [HttpGet("user/{id}")]
     public async Task<IResult> GetCommentsByUser([FromRoute] int id)
     {
         var comments = commentRepository.getMany();
@@ -57,7 +57,7 @@ public class CommentController
         return Results.Ok(comments);
     }
 
-    [HttpGet]
+    [HttpGet("post/{postID}")]
     public async Task<IResult> GetCommentsByPost([FromRoute] int postID)
     {
         var comments = commentRepository.getMany();
@@ -65,7 +65,7 @@ public class CommentController
         return Results.Ok(comments);
     }
 
-    [HttpDelete]
+    [HttpDelete("{id:int}")]
     public async Task<IResult> DeleteComment([FromRoute] int id)
     {
         await commentRepository.DeleteAsync(id);
