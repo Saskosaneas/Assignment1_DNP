@@ -5,7 +5,7 @@ namespace BlazorApp.Services;
 public interface IPostService
 {
     public Task<PostDto> CreatePost(PostDto postDto);
-    Task UpdatePost(int postID, PostDto postDto);
+    Task<PostDto> UpdatePost(int postID, PostDto postDto);
     Task DeletePost(int PostId);
     Task<PostDto> GetPostById(int PostId);
     Task<IEnumerable<PostDto>> GetPostByTitle(string? title);

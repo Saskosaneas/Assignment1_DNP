@@ -1,0 +1,33 @@
+﻿@page "/Users"
+@using BlazorApp.Services
+@using DTOs
+@inject IUserService UserService;
+
+<h3>Users</h3>
+
+<button @onclick="LoadUsers">View Users</button>
+
+
+@if (users == null)
+{
+    <p>Loading users...</p>
+}
+else
+{
+    <ul>
+        @foreach (var user in users)
+        {
+            <li>@user.Username</li> <!-- Display user username or other property -->
+        }
+    </ul>
+}
+
+@code {
+    private IEnumerable<UserDto> users;
+
+    private async Task LoadUsers()
+    {
+        users = await UserService.GetAllUsers();
+    }
+
+}
