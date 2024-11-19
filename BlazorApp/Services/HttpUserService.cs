@@ -91,7 +91,7 @@ public class HttpUserService : IUserService
     {
         var query = string.IsNullOrEmpty(username) ? "" : $"?username={Uri.EscapeDataString(username)}";
 
-        var response = await client.GetAsync($"api/User{query}");
+        var response = await client.GetAsync($"/U   ser");
 
         response.EnsureSuccessStatusCode();
 
