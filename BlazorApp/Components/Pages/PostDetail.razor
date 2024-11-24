@@ -1,0 +1,45 @@
+﻿@page "/Post/{postId:int}"
+@using BlazorApp.Services
+@using DTOs
+@inject IPostService PostService
+@inject NavigationManager NavigationManager
+
+@if (post == null)
+{
+    <p>Loading post...</p>
+}
+else
+{
+    <h5>@post.Title</h5>
+    <p><strong>Author:</strong> @post.Author</p>
+    <p><strong>Body:</strong> @post.Body</p>
+
+@*     <h6>Comments</h6> *@
+@*     @if (post.Comments.Any()) *@
+@*     { *@
+@*         <ul> *@
+@*             @foreach (var comment in post.Comments) *@
+@*             { *@
+@*                 <li>@comment.Body</li> *@
+@*             } *@
+@*         </ul> *@
+@*     } *@
+@*     else *@
+@*     { *@
+@*         <p>No comments yet.</p> *@
+@*     } *@
+@* } *@
+
+
+@code {
+    [Parameter] public int postId { get; set; }
+    private PostDto post;
+
+    protected override async Task OnInitializedAsync()
+    {
+        post = await PostService.GetPostById(postId);
+    }
+
+}
+
+}

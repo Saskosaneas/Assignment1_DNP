@@ -37,19 +37,19 @@ public class HttpPostService : IPostService
     
     public async Task<PostDto> GetPost(int postId)
     {
-        var response = await client.GetAsync($"api/posts/{postId}");
+        var response = await client.GetAsync($"Post/id/{postId}");
 
         if (response.IsSuccessStatusCode)
         {
             return await response.Content.ReadFromJsonAsync<PostDto>();
         }
 
-        return null; // or handle failure accordingly
+        return null; 
     }
     
     public async Task<IEnumerable<PostDto>> GetPosts(string? title = null, string? username = null)
     {
-        var url = "api/posts";
+        var url = "/Post";
 
         if (!string.IsNullOrEmpty(title) || !string.IsNullOrEmpty(username))
         {
@@ -79,7 +79,7 @@ public class HttpPostService : IPostService
     
     public async Task<PostDto> GetPostById(int postId)
     {
-        var response = await client.GetAsync($"api/posts/{postId}");
+        var response = await client.GetAsync($"Post/id/{postId}");
 
         if (response.IsSuccessStatusCode)
         {

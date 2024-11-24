@@ -50,12 +50,39 @@ public class PostController : ControllerBase
     }
 
     [HttpGet("id/{id}")]
-    public async Task<IResult> GetPost([FromRoute] int id)
+    public async Task<IResult> GetPost([FromRoute] int id, [FromServices] IuserRepository userRepository)
     {
-        Post post = await postReporsitory.GetSingleAsync(id);
-        return Results.Ok(post);
-    }
+        // Fetch the post
+        var post = await postReporsitory.GetSingleAsync(id);
 
+        // Check if the post exists
+        if (post == null)
+        {
+            return Results.NotFound($"Post with ID {id} not found.");
+        }
+
+        // Fetch the user (author) associated with the post
+        var user = await userRepository.GetSingleAsync(post.UserID);
+
+        // Check if the user exists
+        if (user == null)
+        {
+            return Results.NotFound($"User with ID {post.UserID} not found.");
+        }
+
+        // Map the post and user to a PostDto
+        var postDto = new PostDto
+        {
+            ID = post.ID,
+            Title = post.Title,
+            Body = post.Body,
+            UserID = post.UserID,
+            Author = user.Username // Assign the username as the author
+        };
+
+        // Return the DTO
+        return Results.Ok(postDto);
+    }
     [HttpGet]
     public async Task<IResult> GetPostByTitle([FromQuery] string? title)
     {

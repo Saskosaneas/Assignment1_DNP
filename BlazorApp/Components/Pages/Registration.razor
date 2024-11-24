@@ -1,0 +1,38 @@
+﻿@page "/register"
+@inject IUserService UserService;
+@inject NavigationManager NavigationManager
+@using BlazorApp.Services
+@using DTOs
+@using Microsoft.AspNetCore.Mvc.RazorPages
+
+
+
+<h3>Registration</h3>
+<input @bind = "inputUsername" placeholder="Username"/>
+<input @bind = "inputPassword" placeholder="Password"/>
+<button @onclick="Register">Register user</button>
+
+@if (isSuccess)
+{
+    <p style="color: green;">User successfully registered!</p>
+}
+
+@code {
+    private String inputUsername;
+    private String inputPassword;
+    private bool isSuccess = false;
+    
+    private async Task Register()
+    {
+        UserDto dto = new UserDto()
+        {
+            Username = inputUsername,
+            Password = inputPassword
+        };
+        await UserService.AddUserAsync(dto);
+        isSuccess = true;  
+        inputUsername = string.Empty;
+        inputPassword = string.Empty;
+    }
+    
+}

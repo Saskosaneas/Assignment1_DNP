@@ -10,4 +10,8 @@ public interface IPostService
     Task<PostDto> GetPostById(int PostId);
     Task<IEnumerable<PostDto>> GetPostByTitle(string? title);
     Task<IEnumerable<PostDto>> GetPostByUser(int UserID);
+    
+    Task<IEnumerable<PostDto>> GetPosts(string? title = null, string? username= null);
+    
+
 }

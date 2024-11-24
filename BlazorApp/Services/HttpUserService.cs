@@ -43,7 +43,7 @@ public class HttpUserService : IUserService
     {
         try
         {
-            var response = await client.PostAsJsonAsync("api/User", request);
+            var response = await client.PostAsJsonAsync("/User", request);
 
             if (response.IsSuccessStatusCode)
             {
@@ -91,8 +91,8 @@ public class HttpUserService : IUserService
     {
         var query = string.IsNullOrEmpty(username) ? "" : $"?username={Uri.EscapeDataString(username)}";
 
-        var response = await client.GetAsync($"/U   ser");
-
+        var response = await client.GetAsync($"User{query}");
+    
         response.EnsureSuccessStatusCode();
 
         var jsonResponse = await response.Content.ReadAsStringAsync();

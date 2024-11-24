@@ -1,0 +1,38 @@
+﻿@page "/posts"
+@using BlazorApp.Services
+@using DTOs
+@inject IPostService PostService
+@inject NavigationManager NavigationManager
+
+<h3>Posts</h3>
+
+@if (posts == null)
+{
+    <p>Loading posts...</p>
+}
+else if (!posts.Any())
+{
+    <p>No posts available.</p>
+}
+else
+{
+    <ul>
+        @foreach (var post in posts)
+        {
+            <li>
+                <a href="/Post/@post.ID">@post.Title</a>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    private IEnumerable<PostDto> posts;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        posts = await PostService.GetPosts();
+    }
+    
+    
+}
