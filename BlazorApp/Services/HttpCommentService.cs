@@ -59,7 +59,7 @@ public class HttpCommentService : ICommentService
 
     public async Task<IEnumerable<CommentDto>> GetCommentPost(int postId)
     {
-        var response = await client.GetAsync($"api/Comment/GetByPostId/{postId}");
+        var response = await client.GetAsync($"/Comment/post/{postId}");
         if (response.IsSuccessStatusCode)
         {
             return await response.Content.ReadFromJsonAsync<IEnumerable<CommentDto>>();

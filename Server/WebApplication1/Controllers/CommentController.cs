@@ -25,7 +25,7 @@ public class CommentController
     public async Task<IResult> AddComment([FromBody] CommentDto req,
         [FromServices] IcommentRepository commentRepository)
     {
-        Comment comment = new Comment(req.Body,req.UserID,req.UserID);
+        Comment comment = new Comment(req.Body,req.postID,req.UserID);
         Comment created = await commentRepository.AddAsync(comment);
 
         CommentDto dto = new()
