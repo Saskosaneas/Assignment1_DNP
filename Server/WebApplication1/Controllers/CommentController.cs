@@ -15,10 +15,12 @@ namespace WebApplication1.Controllers;
 public class CommentController
 {
     private readonly IcommentRepository commentRepository;
+    private readonly IuserRepository userRepository;
 
-    public CommentController(IcommentRepository commentRepository)
+    public CommentController(IcommentRepository commentRepository, IuserRepository userRepository)
     {
         this.commentRepository = commentRepository;
+        this.userRepository = userRepository;
     }
 
     [HttpPost]
@@ -60,9 +62,20 @@ public class CommentController
     [HttpGet("post/{postID}")]
     public async Task<IResult> GetCommentsByPost([FromRoute] int postID)
     {
-        var comments = commentRepository.getMany();
-        comments = comments.Where(c => c.PostID == postID);
-        return Results.Ok(comments);
+        var comments = commentRepository.getMany().Where(c => c.PostID == postID).ToList();
+        
+        var users = userRepository.getMany().ToList();
+
+        var commentDtos = comments.Select(c => new CommentDto
+        {
+            ID = c.ID,
+            Body = c.Body,
+            postID = c.PostID,
+            UserID = c.UserID,
+            Author = users.FirstOrDefault(u => u.ID == c.UserID)?.Username ?? "Unknown" // Fetch author username
+        }).ToList();
+
+        return Results.Ok(commentDtos);
     }
 
     [HttpDelete("{id:int}")]

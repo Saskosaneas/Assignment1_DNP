@@ -1,0 +1,46 @@
+﻿@page "/CreatePost"
+@inject IPostService PostService;
+@inject NavigationManager NavigationManager
+@using BlazorApp.Services
+@using DTOs
+@using Microsoft.AspNetCore.Mvc.RazorPages
+
+
+
+<h3>CreatePost</h3>
+<input @bind = "inputTitle" placeholder="Title"/>
+<input @bind = "inputBody" placeholder="Body"/>
+<input @bind = "inputAuthor" placeholder="Author"/>
+<input @bind = "inputUserId" placeholder="inputUserId" type="number"/>
+
+<button @onclick="MakePost">Create a new post</button>
+
+@if (isSuccess)
+{
+    <p style="color: green;">Post created succesfully!</p>
+}
+
+@code {
+    private int inputUserId;
+    private String inputAuthor;
+    private String inputTitle;
+    private String inputBody;
+    private bool isSuccess = false;
+
+    private async Task MakePost()
+    {
+        PostDto dto = new PostDto()
+        {
+            Title = inputTitle,
+            Body = inputBody,
+            UserID = inputUserId,
+            Author = inputAuthor
+        };
+        await PostService.CreatePost(dto);
+        isSuccess = true;
+        inputUserId = 0;
+        inputBody = string.Empty;
+        inputTitle = string.Empty;
+    }
+
+}

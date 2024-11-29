@@ -17,10 +17,10 @@ else
     <p><strong>Body:</strong> @post.Body</p>
 
     <h6>Comments</h6>
-    @foreach(var comment in comments)
+    @foreach (var comment in comments)
     {
-        <p>@comment.Body</p>
-}
+        <p><strong>@comment.Author:</strong> @comment.Body</p>
+    }
 
 
 @code {

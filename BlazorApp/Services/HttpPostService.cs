@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using BlazorApp.Components.Pages;
 using DTOs;
 
 namespace BlazorApp.Services;
@@ -6,22 +7,45 @@ namespace BlazorApp.Services;
 public class HttpPostService : IPostService
 {
     private readonly HttpClient client;
+    private readonly Dictionary<int, string> posts = new();
+
 
     public HttpPostService(HttpClient client)
     {
         this.client = client;
     }
 
-    public async Task<PostDto> CreatePost(PostDto postDto)
+    public async Task<PostDto> CreatePost(PostDto request)
     {
-        var response = await client.PostAsJsonAsync("api/Post", postDto);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            return await response.Content.ReadFromJsonAsync<PostDto>();
-        }
+            var response = await client.PostAsJsonAsync("/Post", request);
 
-        return null;
+            if (response.IsSuccessStatusCode)
+            {
+                var createdPost = await response.Content.ReadFromJsonAsync<PostDto>();
+
+                if (createdPost != null)
+                {
+                    posts[createdPost.ID] = createdPost.Title;
+                }
+
+                return createdPost!;
+            }
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Failed to add post. Status: {response.StatusCode}, Message: {errorMessage}");
+            }
+        }
+        catch (HttpRequestException e)
+        {
+            throw new Exception("Error while communicating with the server.", e);
+        }
+        catch (Exception e)
+        {
+            throw new Exception("An unexpected error occurred while creating the post.", e);
+        }
     }
 
     public async Task<PostDto> UpdatePost(int postID, PostDto postDto)
