@@ -22,10 +22,39 @@ else
         <p><strong>@comment.Author:</strong> @comment.Body</p>
     }
 
+    <h7>Add a comment</h7>
+    <form>
+        <input @bind="inputAuthor" placeholder="Author" class="comment-input" />
+        <textarea @bind="inputBody" placeholder="Enter your comment" class="comment-textarea"></textarea>
+        <br/>
+        <button @onclick="AddComment" type="button">Submit</button>
+    </form>
 
 @code {
     private IEnumerable<CommentDto> comments = new List<CommentDto>();
-    
+    private String inputAuthor;
+    private String inputBody;
+
+
+    private async Task AddComment()
+    {
+
+        var user = await UserService.GetUserByUsername(inputAuthor);
+        
+        CommentDto dto = new CommentDto()
+        {
+            Author = inputAuthor,
+            Body = inputBody,
+            UserID = user.ID,
+            postID = postId
+        };
+        
+        await CommentService.CreateComment(dto);
+        inputBody = string.Empty;
+        inputAuthor = string.Empty;
+        comments = await CommentService.GetCommentPost(postId);
+
+    }
    
 
     [Parameter] public int postId { get; set; }
@@ -35,7 +64,6 @@ else
     {
         post = await PostService.GetPostById(postId);
         comments = await CommentService.GetCommentPost(postId);
-
     }
 
 }

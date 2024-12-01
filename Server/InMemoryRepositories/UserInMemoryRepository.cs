@@ -62,5 +62,10 @@ public class UserInMemoryRepository : IuserRepository
         return users.AsQueryable();
     }
 
+    public async Task<User> GetByUsernameAsync(string username)
+    {
+        return null;
+    }
+    
     
 }

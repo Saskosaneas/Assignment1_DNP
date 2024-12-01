@@ -1,5 +1,6 @@
 ﻿@page "/CreatePost"
 @inject IPostService PostService;
+@inject IUserService UserService;
 @inject NavigationManager NavigationManager
 @using BlazorApp.Services
 @using DTOs
@@ -11,7 +12,6 @@
 <input @bind = "inputTitle" placeholder="Title"/>
 <input @bind = "inputBody" placeholder="Body"/>
 <input @bind = "inputAuthor" placeholder="Author"/>
-<input @bind = "inputUserId" placeholder="inputUserId" type="number"/>
 
 <button @onclick="MakePost">Create a new post</button>
 
@@ -21,7 +21,6 @@
 }
 
 @code {
-    private int inputUserId;
     private String inputAuthor;
     private String inputTitle;
     private String inputBody;
@@ -29,18 +28,21 @@
 
     private async Task MakePost()
     {
+        
+        var user = await UserService.GetUserByUsername(inputAuthor);
+
         PostDto dto = new PostDto()
         {
             Title = inputTitle,
             Body = inputBody,
-            UserID = inputUserId,
+            UserID = user.ID,
             Author = inputAuthor
         };
         await PostService.CreatePost(dto);
         isSuccess = true;
-        inputUserId = 0;
         inputBody = string.Empty;
         inputTitle = string.Empty;
+        inputAuthor = string.Empty;
     }
 
 }

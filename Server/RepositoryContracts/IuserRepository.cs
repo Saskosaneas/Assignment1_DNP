@@ -9,4 +9,5 @@ public interface IuserRepository
     Task DeleteAsync(int id);
     Task<User> GetSingleAsync(int id);
     IQueryable<User> getMany();
+    Task<User> GetByUsernameAsync(string username);
 }

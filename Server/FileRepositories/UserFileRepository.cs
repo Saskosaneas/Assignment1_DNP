@@ -69,4 +69,13 @@ public class UserFileRepository : IuserRepository
         List<User> users = JsonSerializer.Deserialize<List<User>>(commentsAsJson)!;
         return users.AsQueryable();
     }
+    
+    public async Task<User> GetByUsernameAsync(string username)
+    {
+        
+        var users = await GetUsers();
+        User userToReturn = users.FirstOrDefault( x => x.Username == username);
+        await WriteUsers(users);
+        return userToReturn;
+    }
 }

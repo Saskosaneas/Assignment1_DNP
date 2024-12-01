@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
 
+
 namespace WebApplication1.Controllers;
 [ApiController]
 [Route("[controller]")]
@@ -76,5 +77,16 @@ public async Task<IResult> GetMany([FromQuery] string? userUsername)
         users = users.Where(u => u.Username.ToLower().Contains(userUsername.ToLower()));
     return Results.Ok(users);
 }
+
+[HttpGet("GetByUsername")]
+public async Task<ActionResult<string>> GetUserByUsernameAsync([FromQuery] string username, [FromServices] IuserRepository userRepository)
+{
+    var user = await userRepository.GetByUsernameAsync(username);
+    {
+        return NotFound($"No user found with username: {username}");
+    }
+    return Ok(user.Username);
+}   
+
 
 }

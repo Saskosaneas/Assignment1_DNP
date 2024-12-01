@@ -24,19 +24,19 @@ public class CommentController
     }
 
     [HttpPost]
-    public async Task<IResult> AddComment([FromBody] CommentDto req,
-        [FromServices] IcommentRepository commentRepository)
-    {
-        Comment comment = new Comment(req.Body,req.postID,req.UserID);
-        Comment created = await commentRepository.AddAsync(comment);
-
-        CommentDto dto = new()
+        public async Task<IResult> AddComment([FromBody] CommentDto req,
+            [FromServices] IcommentRepository commentRepository)
         {
-            Body = created.Body,
-            postID = created.PostID,
-            UserID = created.UserID
-        };
-        return Results.Created($"comments/{created.ID}", dto);    }
+            Comment comment = new Comment(req.Body,req.postID,req.UserID);
+            Comment created = await commentRepository.AddAsync(comment);
+
+            CommentDto dto = new()
+            {
+                Body = created.Body,
+                postID = created.PostID,
+                UserID = created.UserID
+            };
+            return Results.Created($"comments/{created.ID}", dto);    }
 
     [HttpPut("{id}")]
     public async Task<IResult> ReplaceComment([FromRoute] int id,

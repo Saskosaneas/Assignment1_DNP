@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json;
-    using DTOs;
+using BlazorApp.Components.Pages;
+using DTOs;
 namespace BlazorApp.Services;
 
 public class HttpUserService : IUserService
@@ -115,6 +116,31 @@ public class HttpUserService : IUserService
         var response = await client.PutAsync($"api/User/{id}", jsonContent);
 
         response.EnsureSuccessStatusCode();
+    }
+    
+    public async Task<UserDto> GetUserByUsername(string username)
+    {
+        var response = await client.GetAsync($"/User?username={username}");
+        var responseContent = await response.Content.ReadAsStringAsync();
+        Console.WriteLine(responseContent);  // Log the raw JSON to the console
+
+        if (response.IsSuccessStatusCode)
+        {
+            try
+            {
+                // Deserialize into a List<UserDto>
+                var users = await response.Content.ReadFromJsonAsync<List<UserDto>>();
+
+                // Find the user by username
+                return users?.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+            }
+            catch (JsonException ex)
+            {
+                Console.WriteLine($"Error deserializing JSON: {ex.Message}");
+                throw;
+            }
+        }
+        return null;
     }
 
     
